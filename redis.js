@@ -1,6 +1,6 @@
-const { v4: uuidv4 } = require('uuid')
+const shortid = require('shortid')
 const redisModule = require('redis')
-const url = 'redis://:j1c87vmrjzpdqq6ynsce3jenrbt7q31382py0b69v6pz1351sdm3@satisfied-anteater-37bb81f5be.redisgreen.net:11042'
+const url = 'redis://default:redispw@localhost:32768'
 const redis = redisModule.createClient({ url })
 
 redis.on('connect', () => { console.log('Connected to RedisGreen...') })
@@ -16,7 +16,7 @@ const store = (url) => {
       if (error) { return reject('Error occured during Redis operation!') }
       if (reply) { resolve(reply) }
       else {
-        let id = uuidv4()
+        let id = shortid.generate()
         redis.set(id, url)
         redis.set(url, id)
         resolve(id)
